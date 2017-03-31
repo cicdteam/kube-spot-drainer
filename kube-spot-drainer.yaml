@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: kube-spot-drainer
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      labels:
+        app: kube-spot-drainer
+      name: kube-spot-drainer
+    spec:
+      containers:
+      - image: pure/kube-spot-drainer:1.5.2
+        imagePullPolicy: Always
+        name: kube-spot-drainer
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
